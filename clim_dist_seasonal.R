@@ -39,5 +39,5 @@ get_seasonal <- function(i, files, outDir, density.args=list(n=200, adjust=0.1))
 
 set.seed(62)
 variable <- c("pr", "tas", "tasmin", "tasmax") # iterate using four Atlas nodes
-files <- list.files(recursive=TRUE, pattern=paste0(".*.", variable[1], "_.*."))
+files <- list.files(recursive=TRUE, pattern=paste0("^", variable[1], "_.*."))
 mclapply(seq_along(files), get_seasonal, files=files, outDir=outDir, mc.cores=28)

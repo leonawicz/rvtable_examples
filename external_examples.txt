@@ -1,3 +1,6 @@
 Additional examples located in other repositories:
 
 agedist/tpa_age_dist.R
+bird/stand_age.R
+LandCarbon/code/projected_veg_fire_plots.R
+IEM_AR5/ba_bounding_gcm.R

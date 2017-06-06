@@ -10,12 +10,15 @@ get_seasonal <- function(i, files, outDir, density.args=list(n=200, adjust=0.1))
   .seasonal <- function(x, season, density.args){
     .season <- function(x, months){
       yrs <- range(x$Year)
-      x <- filter(x, Month %in% months) %>% mutate(Year=ifelse(Month==12, Year+1L, Year))
-      filter(x, Year >= yrs[1] + 1 & Year <= yrs[2]) %>% rvtable
+      x <- filter(x, Month %in% months) 
+      if(any(months==12)){
+        y <- mutate(x, Year=ifelse(Month==12, Year+1L, Year)) %>% filter(Year > yrs[1] & Year <= yrs[2])
+        x <- filter(x, Year==yrs[1]) %>% bind_rows(y)
+      }
+      rvtable(x)
     }
-    x <- rvtable(x)
     x <- switch(season,
-      "annual"=x, "winter"=.season(x, c(1,2,12)), "spring"=.season(x, 3:5), 
+      "annual"=rvtable(x), "winter"=.season(x, c(1,2,12)), "spring"=.season(x, 3:5), 
       "summer"=.season(x, 6:8), "autumn"=.season(x, 9:11))
     marginalize(x, "Month", density.args=density.args)
   }
